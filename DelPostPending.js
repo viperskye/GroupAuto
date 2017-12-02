@@ -48,7 +48,7 @@ function DelPOST() {
 	if(x == null) {
 		window.scrollTo(0,document.body.scrollHeight);
 		console.log('Tải thêm bài viết ...');
-		setTimeout(function() {getid();}, 1000);
+		setTimeout(function() {DelPOST();}, 1000);
 		return;
 	}
 	id = x.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute('id').split('_')[2].toString();

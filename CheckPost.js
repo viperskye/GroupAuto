@@ -127,36 +127,17 @@ function ApprovePost() {
 		}
 		Change('Pending Posts');
 		console.log('Không tìm thấy bài viết mới, thử lại sau : '+thoigian.toString()+'s');
-		setTimeout(function() {ApprovePost();}, (thoigian+5)*1000);
+		setTimeout(function() {ApprovePost();}, thoigian*1000);
 		return;
 	}
 }
-Delpost = function(arr,i) {
-	console.log('bắt đầu xóa ' +arr);
-	if(localStorage.getItem('IsClickd') == 'true') {
-		if(document.querySelector('button[data-testid="delete_post_confirm_button"]') != null) {
-			localStorage.setItem('IsClickd', 'false');
-			document.querySelector('button[data-testid="delete_post_confirm_button"]').click();
-			console.log('click nút xóa');
-			setTimeout(function() {ApprovePost();}, 2000);
-		} else {
-			if(i > 3) {
-				localStorage.setItem('IsClicđ', 'false');
-				console.log('Có lỗi xảy ra với bài viết, chuyển qua bài kế tiếp');
-				setTimeout(function() {ApprovePost();}, 2000);
-				return;
-			}
-			console.log('Chưa có nút xóa');
-			setTimeout(function() {Delpost(arr,i+1);}, 2000);
-			return;
-		}
-	} else {
-		x = arr.toString();
-		localStorage.setItem('IsClickd','true');
-		console.log(x);
-		document.querySelector('div#mall_post_'+x+' a[data-hover="tooltip"][data-tooltip-content="Delete"]').click();
-		setTimeout(function() {Delpost(arr);}, 2000);
-	}
+function Delpost(id) {
+	document.getElementById('mall_post_'+id).innerText = 'Đã xóa bài viết này';
+	var request = new XMLHttpRequest();
+	request.open('POST', 'https://www.facebook.com/ajax/groups/mall/delete.php?dpr=1', true);
+	request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+	request.send('fb_dtsg='+fbdtsg+'&group_id='+groupid+'&message_id='+id+'&confirmed=1&pending=1&source=&story_dom_id=mall_post_'+id+'&revision_id=&inner_tab=&surface=&location=&__user='+getCookie('c_user')+'&__a=1&__dyn=&__req=292&__be=1&__pc=PHASED%3ADEFAULT&__rev=&jazoest=&__spin_r=&__spin_b=trunk&__spin_t=');
+	setTimeout(function() {ApprovePost()}, 3000);
 }
 function xoa_dau(str) {
     str = str.replace('/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g', "a");

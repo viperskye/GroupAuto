@@ -4,10 +4,12 @@ getdtsg();
 function getdtsg() {
 	if(document.querySelector('input[name="fb_dtsg"]') != null) {
 		fbdtsg = document.querySelector('input[name="fb_dtsg"]').getAttribute('value');
+		document.querySelector('button[data-testid="delete_post_confirm_button"]').click();
 		Change('Pending Posts');
 		DelPOST();
 		return true;
 	} else {
+		document.querySelector('div a[data-hover="tooltip"][data-tooltip-content="Delete"]').click();
 		//Change('Pending Posts');
 		console.log('Không tìm thấy dtsg, thử lại sau 3s');
 		setTimeout(function() {getdtsg();}, 3000);

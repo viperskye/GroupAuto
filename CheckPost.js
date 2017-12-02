@@ -86,7 +86,7 @@ function ApprovePost() {
 	} else {
 		x = document.querySelector('div a[data-hover="tooltip"][data-tooltip-content="Approve"]');
 		if(x != null) {
-			if(indexofObject(x.parentNode.parentNode.parentNode.lastChild.querySelector('p').innerText.toLowerCase(),keyword) == true) {
+			if(indexofObject(x.parentNode.parentNode.parentNode.lastChild.innerText.toLowerCase(),keyword) == true) {
 				temp = x.parentNode.parentNode.parentNode.lastChild.querySelector('div div a').getAttribute('data-hovercard').toString();
 				userid = temp.slice(temp.indexOf('=')+1,temp.indexOf('&'));
 				kt = (localStorage.getItem(groupid+'_band') != null) ? localStorage.getItem(groupid+'_band') : '';
@@ -122,25 +122,26 @@ function ApprovePost() {
 				idpost = x.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute('id').split('_')[2];
 				console.log('Bài viết không chứa từ khóa, xóa bài viết');
 				Delpost(idpost);
+				return;
 			}
 		}
 		Change('Pending Posts');
-		Console.log('Không tìm thấy bài viết mới, thử lại sau : '+thoigian.toString()+'s');
+		console.log('Không tìm thấy bài viết mới, thử lại sau : '+thoigian.toString()+'s');
 		setTimeout(function() {ApprovePost();}, (thoigian+5)*1000);
 		return;
 	}
 }
 Delpost = function(arr,i) {
 	console.log('bắt đầu xóa ' +arr);
-	if(localStorage.getItem('IsClick') == 'true') {
+	if(localStorage.getItem('IsClickd') == 'true') {
 		if(document.querySelector('button[data-testid="delete_post_confirm_button"]') != null) {
-			localStorage.setItem('IsClick', 'false');
+			localStorage.setItem('IsClickd', 'false');
 			document.querySelector('button[data-testid="delete_post_confirm_button"]').click();
 			console.log('click nút xóa');
 			setTimeout(function() {ApprovePost();}, 2000);
 		} else {
 			if(i > 3) {
-				localStorage.setItem('IsClick', 'false');
+				localStorage.setItem('IsClicđ', 'false');
 				console.log('Có lỗi xảy ra với bài viết, chuyển qua bài kế tiếp');
 				setTimeout(function() {ApprovePost();}, 2000);
 				return;
@@ -151,7 +152,7 @@ Delpost = function(arr,i) {
 		}
 	} else {
 		x = arr.toString();
-		localStorage.setItem('IsClick','true');
+		localStorage.setItem('IsClickd','true');
 		console.log(x);
 		document.querySelector('div#mall_post_'+x+' a[data-hover="tooltip"][data-tooltip-content="Delete"]').click();
 		setTimeout(function() {Delpost(arr);}, 2000);

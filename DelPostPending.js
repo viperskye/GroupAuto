@@ -4,13 +4,10 @@ getdtsg();
 function getdtsg() {
 	if(document.querySelector('input[name="fb_dtsg"]') != null) {
 		fbdtsg = document.querySelector('input[name="fb_dtsg"]').getAttribute('value');
-		document.querySelector('button[data-testid="delete_post_confirm_button"]').click();
-		Change('Pending Posts');
-		DelPOST();
+		console.log('Đã lấy được giá trị dtsg, bắt đầu xóa post sau 3s');
+		setTimeout(function() {DelPOST();}, 3000);
 		return true;
 	} else {
-		document.querySelector('div a[data-hover="tooltip"][data-tooltip-content="Delete"]').click();
-		//Change('Pending Posts');
 		console.log('Không tìm thấy dtsg, thử lại sau 3s');
 		setTimeout(function() {getdtsg();}, 3000);
 		return false;
@@ -44,15 +41,16 @@ function Change(spantext) {
 	}
 }
 function DelPOST() {
-	x = document.querySelector('div a[data-hover="tooltip"][data-tooltip-content="Delete"]');
+	x = document.querySelector('div[id^="mall_post"]');
 	if(x == null) {
 		window.scrollTo(0,document.body.scrollHeight);
 		console.log('Tải thêm bài viết ...');
 		setTimeout(function() {DelPOST();}, 1000);
 		return;
 	}
-	id = x.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute('id').split('_')[2].toString();
-	x.parentNode.parentNode.parentNode.parentNode.innerHTML = 'ok';
+	id = x.getAttribute('id').split('_')[2].toString();
+	x.removeAttribute('id');
+	x.innerHTML = 'ok';
 	var request = new XMLHttpRequest();
 	request.open('POST', 'https://www.facebook.com/ajax/groups/mall/delete.php?dpr=1', true);
 	request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
